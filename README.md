@@ -2,7 +2,7 @@
 
 > Native system monitor for Sailfish OS — built entirely on-device on a Sony Xperia XA2.
 
-![Screenshot](screenshot.png)
+<img src="screenshot.png" width="300" alt="System Ninja screenshot">
 
 ## Features
 
