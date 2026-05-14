@@ -254,14 +254,6 @@ ApplicationWindow {
             networkStatus.text = data.network.status
             networkIp.text = "IP: " + data.network.ip
         }
-        if (data.processes) {
-            for (var i = 0; i < Math.min(data.processes.length, 5); i++) {
-                var row = procRepeater.itemAt(i)
-                if (row) {
-                    row.children[0].text = data.processes[i].pid
-                    row.children[1].text = data.processes[i].name
-                }
-            }
-        }
+        // Process list removed — Repeater caused ghost text rendering bug
     }
 }

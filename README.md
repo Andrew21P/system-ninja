@@ -2,7 +2,7 @@
 
 > Native system monitor for Sailfish OS — built entirely on-device on a Sony Xperia XA2.
 
-![Icon](icon.png)
+![Screenshot](screenshot.png)
 
 ## Features
 
@@ -54,6 +54,7 @@ system-ninja/
 ├── backend.py    # Python system stats backend
 ├── launch.sh     # Launcher script (sets QT_SELECT=5)
 ├── icon.png      # App icon
+├── screenshot.png # App screenshot
 └── README.md     # This file
 ```
 
