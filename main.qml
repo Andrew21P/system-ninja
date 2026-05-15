@@ -12,65 +12,71 @@ ApplicationWindow {
             id: coverBg
             allowResize: true
 
-            Column {
-                anchors.centerIn: parent
-                width: parent.width * 0.82
-                spacing: parent.height * 0.025
+            property bool isSmall: size === Cover.Small
+            property real _scale: width / Theme.coverSizeLarge.width
 
-                // CPU% — hero stat, scales with cover height
-                Label {
-                    width: parent.width
-                    height: coverBg.height * 0.18
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    text: (app.latestStats.cpu ? app.latestStats.cpu.pct : "0") + "%"
-                    color: {
-                        var pct = app.latestStats.cpu ? app.latestStats.cpu.pct : 0
-                        return pct > 80 ? "#ff4d4d" : pct > 50 ? "#ffaa00" : Theme.highlightColor
-                    }
-                    font.pixelSize: height * 0.75
-                    font.bold: true
-                }
+            // Inner item always designed for LARGE size, then scaled to actual cover
+            Item {
+                id: content
+                width: Theme.coverSizeLarge.width
+                height: Theme.coverSizeLarge.height
+                scale: coverBg._scale
+                transformOrigin: Item.TopLeft
 
-                // "CPU" label
-                Label {
-                    width: parent.width
-                    height: coverBg.height * 0.07
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    text: "CPU"
-                    color: Theme.secondaryColor
-                    font.pixelSize: height * 0.7
-                }
+                Column {
+                    anchors.centerIn: parent
+                    width: parent.width * 0.8
+                    spacing: Theme.paddingMedium
 
-                // Visual bar — scales with cover width
-                Rectangle {
-                    width: parent.width
-                    height: coverBg.height * 0.055
-                    color: Theme.rgba(Theme.secondaryColor, 0.15)
-                    radius: height / 2
-
-                    Rectangle {
-                        width: parent.width * (app.latestStats.cpu ? app.latestStats.cpu.pct : 0) / 100
-                        height: parent.height
-                        radius: height / 2
+                    // CPU% — big hero number
+                    Label {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: (app.latestStats.cpu ? app.latestStats.cpu.pct : "0") + "%"
                         color: {
                             var pct = app.latestStats.cpu ? app.latestStats.cpu.pct : 0
-                            return pct > 80 ? "#ff4d4d" : pct > 50 ? "#ffaa00" : "#00cc66"
+                            return pct > 80 ? "#ff4d4d" : pct > 50 ? "#ffaa00" : Theme.highlightColor
+                        }
+                        font.pixelSize: Theme.fontSizeExtraLarge * 1.5
+                        font.bold: true
+                    }
+
+                    // CPU label — hidden when small
+                    Label {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: "CPU"
+                        color: Theme.secondaryColor
+                        font.pixelSize: Theme.fontSizeSmall
+                        visible: !coverBg.isSmall
+                    }
+
+                    // Visual bar
+                    Rectangle {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        width: parent.width
+                        height: Theme.paddingMedium
+                        color: Theme.rgba(Theme.secondaryColor, 0.15)
+                        radius: height / 2
+
+                        Rectangle {
+                            width: parent.width * (app.latestStats.cpu ? app.latestStats.cpu.pct : 0) / 100
+                            height: parent.height
+                            radius: height / 2
+                            color: {
+                                var pct = app.latestStats.cpu ? app.latestStats.cpu.pct : 0
+                                return pct > 80 ? "#ff4d4d" : pct > 50 ? "#ffaa00" : "#00cc66"
+                            }
                         }
                     }
-                }
 
-                // RAM + Battery — compact
-                Label {
-                    width: parent.width
-                    height: coverBg.height * 0.08
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    text: "RAM " + (app.latestStats.ram ? app.latestStats.ram.pct : "0") +
-                          "%   BAT " + (app.latestStats.battery ? app.latestStats.battery.capacity : "0") + "%"
-                    color: Theme.secondaryColor
-                    font.pixelSize: height * 0.65
+                    // RAM + Battery — hidden when small
+                    Label {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: "RAM " + (app.latestStats.ram ? app.latestStats.ram.pct : "0") +
+                              "%   BAT " + (app.latestStats.battery ? app.latestStats.battery.capacity : "0") + "%"
+                        color: Theme.secondaryColor
+                        font.pixelSize: Theme.fontSizeSmall
+                        visible: !coverBg.isSmall
+                    }
                 }
             }
 
