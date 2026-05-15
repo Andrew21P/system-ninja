@@ -7,68 +7,12 @@ ApplicationWindow {
     
     property var latestStats: ({"cpu":{"pct":0},"ram":{"pct":0},"battery":{"capacity":0}})
 
-    cover: Component {
-        CoverBackground {
-            id: coverBg
+    cover: Qt.resolvedUrl("cover/CoverPage.qml")
 
-            // Content lives at the top of the cover so it survives
-            // compositor cropping when the cover is shown small.
-            Column {
-                anchors.top: parent.top
-                anchors.topMargin: Theme.paddingLarge
-                anchors.horizontalCenter: parent.horizontalCenter
-                width: parent.width - Theme.paddingLarge * 2
-                spacing: Theme.paddingSmall
-
-                Label {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: (app.latestStats.cpu ? app.latestStats.cpu.pct : "0") + "%"
-                    color: {
-                        var pct = app.latestStats.cpu ? app.latestStats.cpu.pct : 0
-                        return pct > 80 ? "#ff4d4d" : pct > 50 ? "#ffaa00" : Theme.highlightColor
-                    }
-                    font.pixelSize: Theme.fontSizeExtraLarge
-                    font.bold: true
-                }
-
-                Rectangle {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    width: parent.width
-                    height: Theme.paddingSmall
-                    color: Theme.rgba(Theme.secondaryColor, 0.15)
-                    radius: height / 2
-
-                    Rectangle {
-                        width: parent.width * (app.latestStats.cpu ? app.latestStats.cpu.pct : 0) / 100
-                        height: parent.height
-                        radius: height / 2
-                        color: {
-                            var pct = app.latestStats.cpu ? app.latestStats.cpu.pct : 0
-                            return pct > 80 ? "#ff4d4d" : pct > 50 ? "#ffaa00" : "#00cc66"
-                        }
-                    }
-                }
-
-                Label {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: "RAM " + (app.latestStats.ram ? app.latestStats.ram.pct : "0") +
-                          "%   BAT " + (app.latestStats.battery ? app.latestStats.battery.capacity : "0") + "%"
-                    color: Theme.secondaryColor
-                    font.pixelSize: Theme.fontSizeTiny
-                }
-            }
-
-            CoverActionList {
-                CoverAction {
-                    iconSource: "image://theme/icon-cover-refresh"
-                    onTriggered: {
-                        python.call("backend.get_all", [], function(result) {
-                            updateStats(result)
-                        })
-                    }
-                }
-            }
-        }
+    function refreshFromCover() {
+        python.call("backend.get_all", [], function(result) {
+            updateStats(result)
+        })
     }
 
     initialPage: Page {
