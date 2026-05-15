@@ -24,10 +24,10 @@ CoverBackground {
             verticalAlignment: Text.AlignVCenter
             fontSizeMode: Text.VerticalFit
             height: parent.height * 0.35
-            text: (app.latestStats.cpu ? app.latestStats.cpu.pct : "0") + "%"
+            text: (app.latestStats.cpu ? app.latestStats.cpu.pct : 0) + "%"
             color: {
                 var pct = app.latestStats.cpu ? app.latestStats.cpu.pct : 0
-                return pct > 80 ? "#ff4d4d" : pct > 50 ? "#ffaa00" : Theme.highlightColor
+                return pct > 80 ? "#ff4d4d" : pct > 50 ? "#ffaa00" : "#00cc66"
             }
             font.pixelSize: Theme.fontSizeHuge
             font.bold: true
@@ -40,12 +40,15 @@ CoverBackground {
             radius: height / 2
 
             Rectangle {
-                width: parent.width * (app.latestStats.cpu ? app.latestStats.cpu.pct : 0) / 100
                 height: parent.height
                 radius: height / 2
                 color: {
                     var pct = app.latestStats.cpu ? app.latestStats.cpu.pct : 0
                     return pct > 80 ? "#ff4d4d" : pct > 50 ? "#ffaa00" : "#00cc66"
+                }
+                width: parent.width * (app.latestStats.cpu ? app.latestStats.cpu.pct : 0) / 100
+                Behavior on width {
+                    SmoothedAnimation { duration: 1000; easing.type: Easing.OutCubic }
                 }
             }
         }
@@ -56,8 +59,12 @@ CoverBackground {
             verticalAlignment: Text.AlignVCenter
             fontSizeMode: Text.VerticalFit
             height: parent.height * 0.25
-            text: "RAM " + (app.latestStats.ram ? app.latestStats.ram.pct : "0") +
-                  "%   BAT " + (app.latestStats.battery ? app.latestStats.battery.capacity : "0") + "%"
+            text: {
+                var ram = app.latestStats.ram ? app.latestStats.ram.pct : 0
+                var bat = app.latestStats.battery ? app.latestStats.battery.capacity : 0
+                var status = app.latestStats.battery ? app.latestStats.battery.status : ""
+                return "RAM " + ram + "%   " + (status === "Charging" ? "⚡" : "") + "BAT " + bat + "%"
+            }
             color: Theme.secondaryColor
             font.pixelSize: Theme.fontSizeSmall
         }
