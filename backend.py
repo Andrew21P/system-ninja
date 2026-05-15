@@ -43,22 +43,26 @@ def get_system():
     except:
         pass
 
-    device = "Sailfish Device"
+    model = "Sailfish Device"
+    try:
+        result = subprocess.run(['cat', '/etc/hw-release'], capture_output=True, text=True)
+        for line in result.stdout.split('\n'):
+            if line.startswith('NAME='):
+                model = line.split('=', 1)[1].strip('"')
+                break
+    except:
+        pass
+
+    processor = "Unknown"
     try:
         with open('/proc/device-tree/model') as f:
-            device = f.read().strip().replace('\x00', '')
+            processor = f.read().strip().replace('\x00', '')
     except:
-        try:
-            result = subprocess.run(['cat', '/etc/hw-release'], capture_output=True, text=True)
-            for line in result.stdout.split('\n'):
-                if line.startswith('NAME='):
-                    device = line.split('=', 1)[1].strip('"')
-                    break
-        except:
-            pass
+        pass
 
     return {
-        "device": device,
+        "model": model,
+        "processor": processor,
         "kernel": kernel,
         "os": "Sailfish OS",
         "uptime": _uptime_str()

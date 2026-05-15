@@ -15,7 +15,7 @@ ApplicationWindow {
         "load": [0, 0, 0],
         "processes": [],
         "history": {"cpu": [], "ram": []},
-        "system": {"device": "Device", "kernel": "--", "uptime": "--", "os": "Sailfish OS"}
+        "system": {"model": "Device", "processor": "--", "kernel": "--", "uptime": "--", "os": "Sailfish OS"}
     })
 
     property int tick: 0
@@ -85,7 +85,8 @@ ApplicationWindow {
 
                     Rectangle {
                         anchors.fill: parent
-                        anchors.margins: Theme.horizontalPageMargin
+                        anchors.leftMargin: Theme.horizontalPageMargin
+                        anchors.rightMargin: Theme.horizontalPageMargin
                         color: Theme.rgba(Theme.secondaryColor, 0.06)
                         radius: Theme.paddingMedium
                     }
@@ -101,11 +102,18 @@ ApplicationWindow {
 
                         Label {
                             width: parent.width
-                            text: app.latestStats.system.device
+                            text: app.latestStats.system.model
                             font.pixelSize: Theme.fontSizeMedium
                             color: Theme.highlightColor
                             font.bold: true
-                            truncationMode: TruncationMode.Fade
+                            wrapMode: Text.Wrap
+                        }
+                        Label {
+                            width: parent.width
+                            text: app.latestStats.system.processor
+                            font.pixelSize: Theme.fontSizeExtraSmall
+                            color: Theme.secondaryColor
+                            wrapMode: Text.Wrap
                         }
                         Label {
                             width: parent.width
@@ -134,7 +142,8 @@ ApplicationWindow {
 
                     Rectangle {
                         anchors.fill: parent
-                        anchors.margins: Theme.horizontalPageMargin
+                        anchors.leftMargin: Theme.horizontalPageMargin
+                        anchors.rightMargin: Theme.horizontalPageMargin
                         color: Theme.rgba(Theme.secondaryColor, 0.04)
                         radius: Theme.paddingMedium
                     }
@@ -194,42 +203,6 @@ ApplicationWindow {
                             }
                         }
 
-                        // Per-core mini bars
-                        Grid {
-                            columns: 4
-                            spacing: Theme.paddingSmall
-                            width: parent.width
-                            height: childrenRect.height
-                            Repeater {
-                                model: app.latestStats.cpu.per_core || []
-                                delegate: Item {
-                                    width: (parent.width - 3 * parent.spacing) / parent.columns
-                                    height: Theme.paddingLarge * 2
-                                    Rectangle {
-                                        anchors.fill: parent
-                                        color: Theme.rgba(Theme.secondaryColor, 0.1)
-                                        radius: Theme.paddingSmall
-                                    }
-                                    Rectangle {
-                                        anchors.bottom: parent.bottom
-                                        width: parent.width
-                                        height: parent.height * (modelData / 100)
-                                        radius: Theme.paddingSmall
-                                        color: barColor(modelData)
-                                        Behavior on height {
-                                            SmoothedAnimation { duration: 1000; easing.type: Easing.OutCubic }
-                                        }
-                                    }
-                                    Label {
-                                        anchors.centerIn: parent
-                                        text: index + 1
-                                        font.pixelSize: Theme.fontSizeTiny
-                                        color: Theme.secondaryColor
-                                    }
-                                }
-                            }
-                        }
-
                         // CPU sparkline
                         Canvas {
                             id: cpuSparkline
@@ -270,7 +243,8 @@ ApplicationWindow {
 
                     Rectangle {
                         anchors.fill: parent
-                        anchors.margins: Theme.horizontalPageMargin
+                        anchors.leftMargin: Theme.horizontalPageMargin
+                        anchors.rightMargin: Theme.horizontalPageMargin
                         color: Theme.rgba(Theme.secondaryColor, 0.04)
                         radius: Theme.paddingMedium
                     }
@@ -360,7 +334,8 @@ ApplicationWindow {
 
                     Rectangle {
                         anchors.fill: parent
-                        anchors.margins: Theme.horizontalPageMargin
+                        anchors.leftMargin: Theme.horizontalPageMargin
+                        anchors.rightMargin: Theme.horizontalPageMargin
                         color: Theme.rgba(Theme.secondaryColor, 0.04)
                         radius: Theme.paddingMedium
                     }
@@ -424,7 +399,8 @@ ApplicationWindow {
 
                     Rectangle {
                         anchors.fill: parent
-                        anchors.margins: Theme.horizontalPageMargin
+                        anchors.leftMargin: Theme.horizontalPageMargin
+                        anchors.rightMargin: Theme.horizontalPageMargin
                         color: Theme.rgba(Theme.secondaryColor, 0.04)
                         radius: Theme.paddingMedium
                     }
@@ -498,7 +474,8 @@ ApplicationWindow {
 
                     Rectangle {
                         anchors.fill: parent
-                        anchors.margins: Theme.horizontalPageMargin
+                        anchors.leftMargin: Theme.horizontalPageMargin
+                        anchors.rightMargin: Theme.horizontalPageMargin
                         color: Theme.rgba(Theme.secondaryColor, 0.04)
                         radius: Theme.paddingMedium
                     }
@@ -580,7 +557,8 @@ ApplicationWindow {
 
                     Rectangle {
                         anchors.fill: parent
-                        anchors.margins: Theme.horizontalPageMargin
+                        anchors.leftMargin: Theme.horizontalPageMargin
+                        anchors.rightMargin: Theme.horizontalPageMargin
                         color: Theme.rgba(Theme.secondaryColor, 0.04)
                         radius: Theme.paddingMedium
                     }
@@ -634,7 +612,8 @@ ApplicationWindow {
 
                     Rectangle {
                         anchors.fill: parent
-                        anchors.margins: Theme.horizontalPageMargin
+                        anchors.leftMargin: Theme.horizontalPageMargin
+                        anchors.rightMargin: Theme.horizontalPageMargin
                         color: Theme.rgba(Theme.secondaryColor, 0.04)
                         radius: Theme.paddingMedium
                     }
