@@ -5,7 +5,7 @@
 set -e
 
 NAME=system-ninja
-VERSION=1.0.0
+VERSION=1.0.1
 RELEASE=1
 ARCH=noarch
 
@@ -48,6 +48,7 @@ echo "=== Building RPM ==="
 if which rpmbuild >/dev/null 2>&1; then
     rpmbuild -bb --buildroot "$BUILDROOT" \
         --define "_rpmdir $RPMDIR" \
+        --define "_sourcedir $SOURCES" \
         --define "_build_name_fmt %%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm" \
         rpm/$NAME.spec
 else

@@ -1,2 +1,6 @@
 __pycache__/
 *.pyc
+
+# Local docs
+AGENTS.md
+COVERS.md

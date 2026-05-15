@@ -1,12 +1,14 @@
 Name:       system-ninja
 Summary:    System monitoring dashboard for Sailfish OS
-Version:    1.0.0
+Version:    1.0.1
 Release:    1
 License:    MIT
 URL:        https://github.com/Andrew21P/system-ninja
 Source0:    %{name}-%{version}.tar.gz
 Requires:   pyotherside-qml-plugin-python3-qt5
 Requires:   sailfishsilica-qt5
+Requires:   qt5-qtdeclarative-qmlscene
+Requires:   qtchooser
 BuildArch:  noarch
 
 # Disable brp scripts that fail with BusyBox xargs
