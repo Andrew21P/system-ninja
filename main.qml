@@ -9,50 +9,132 @@ ApplicationWindow {
 
     cover: Component {
         CoverBackground {
-            Rectangle {
-                anchors.fill: parent
-                color: "#000000"
-                opacity: 0.9
+            Column {
+                anchors.centerIn: parent
+                width: parent.width - 10
+                spacing: parent.height > 180 ? 6 : (parent.height > 120 ? 3 : 1)
 
-                Column {
-                    anchors.centerIn: parent
-                    spacing: 1
+                property bool isLarge: parent.height > 180
+                property bool isMedium: parent.height > 120 && parent.height <= 180
+                property bool isSmall: parent.height <= 120
 
-                    function miniBar(pct) {
-                        var filled = Math.round(pct / 20)
-                        var empty = 5 - filled
-                        var out = ""
-                        for (var i = 0; i < filled; i++) out += "█"
-                        for (var i = 0; i < empty; i++) out += "░"
-                        return out
-                    }
+                function bar(pct, size) {
+                    var filled = Math.round(pct / (100 / size))
+                    var empty = size - filled
+                    var out = ""
+                    for (var i = 0; i < filled; i++) out += "█"
+                    for (var i = 0; i < empty; i++) out += "░"
+                    return out
+                }
+
+                Label {
+                    text: "System Ninja"
+                    visible: parent.isLarge
+                    font.pixelSize: 14
+                    color: Theme.highlightColor
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+
+                Label {
+                    text: "Ninja"
+                    visible: parent.isMedium
+                    font.pixelSize: 11
+                    color: Theme.highlightColor
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+
+                // Large: full stats with 10-char bars
+                Label {
+                    visible: parent.isLarge
+                    text: "CPU " + (app.latestStats.cpu ? app.latestStats.cpu.pct : "0") + "%\n" + parent.bar(app.latestStats.cpu ? app.latestStats.cpu.pct : 0, 10)
+                    font.pixelSize: 11
+                    color: Theme.primaryColor
+                    font.family: "Monospace"
+                    lineHeight: 1.2
+                    lineHeightMode: Text.ProportionalHeight
+                }
+
+                Label {
+                    visible: parent.isLarge
+                    text: "RAM " + (app.latestStats.ram ? app.latestStats.ram.pct : "0") + "%\n" + parent.bar(app.latestStats.ram ? app.latestStats.ram.pct : 0, 10)
+                    font.pixelSize: 11
+                    color: Theme.primaryColor
+                    font.family: "Monospace"
+                    lineHeight: 1.2
+                    lineHeightMode: Text.ProportionalHeight
+                }
+
+                Label {
+                    visible: parent.isLarge
+                    text: "BAT " + (app.latestStats.battery ? app.latestStats.battery.capacity : "0") + "%\n" + parent.bar(app.latestStats.battery ? app.latestStats.battery.capacity : 0, 10)
+                    font.pixelSize: 11
+                    color: Theme.primaryColor
+                    font.family: "Monospace"
+                    lineHeight: 1.2
+                    lineHeightMode: Text.ProportionalHeight
+                }
+
+                // Medium: compact 5-char bars
+                Label {
+                    visible: parent.isMedium
+                    text: "C " + (app.latestStats.cpu ? app.latestStats.cpu.pct : "0") + "% " + parent.bar(app.latestStats.cpu ? app.latestStats.cpu.pct : 0, 5)
+                    font.pixelSize: 10
+                    color: Theme.primaryColor
+                    font.family: "Monospace"
+                }
+
+                Label {
+                    visible: parent.isMedium
+                    text: "R " + (app.latestStats.ram ? app.latestStats.ram.pct : "0") + "% " + parent.bar(app.latestStats.ram ? app.latestStats.ram.pct : 0, 5)
+                    font.pixelSize: 10
+                    color: Theme.primaryColor
+                    font.family: "Monospace"
+                }
+
+                Label {
+                    visible: parent.isMedium
+                    text: "B " + (app.latestStats.battery ? app.latestStats.battery.capacity : "0") + "% " + parent.bar(app.latestStats.battery ? app.latestStats.battery.capacity : 0, 5)
+                    font.pixelSize: 10
+                    color: Theme.primaryColor
+                    font.family: "Monospace"
+                }
+
+                // Small: just 2 big numbers, no bars
+                Row {
+                    visible: parent.isSmall
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 8
 
                     Label {
-                        text: "Ninja"
-                        font.pixelSize: 10
+                        text: app.latestStats.cpu ? app.latestStats.cpu.pct : "0"
+                        font.pixelSize: 18
                         color: Theme.highlightColor
-                        anchors.horizontalCenter: parent.horizontalCenter
+                        font.bold: true
                     }
 
                     Label {
-                        text: "C " + (app.latestStats.cpu ? app.latestStats.cpu.pct : "0") + "% " + parent.miniBar(app.latestStats.cpu ? app.latestStats.cpu.pct : 0)
+                        text: app.latestStats.battery ? app.latestStats.battery.capacity : "0"
+                        font.pixelSize: 18
+                        color: Theme.secondaryHighlightColor
+                        font.bold: true
+                    }
+                }
+
+                Row {
+                    visible: parent.isSmall
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 20
+
+                    Label {
+                        text: "CPU"
                         font.pixelSize: 8
-                        color: "#ffffff"
-                        font.family: "Monospace"
+                        color: Theme.secondaryColor
                     }
 
                     Label {
-                        text: "R " + (app.latestStats.ram ? app.latestStats.ram.pct : "0") + "% " + parent.miniBar(app.latestStats.ram ? app.latestStats.ram.pct : 0)
+                        text: "BAT"
                         font.pixelSize: 8
-                        color: "#ffffff"
-                        font.family: "Monospace"
-                    }
-
-                    Label {
-                        text: "B " + (app.latestStats.battery ? app.latestStats.battery.capacity : "0") + "% " + parent.miniBar(app.latestStats.battery ? app.latestStats.battery.capacity : 0)
-                        font.pixelSize: 8
-                        color: "#ffffff"
-                        font.family: "Monospace"
+                        color: Theme.secondaryColor
                     }
                 }
             }
