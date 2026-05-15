@@ -76,32 +76,30 @@ ApplicationWindow {
 
                 Item {
                     width: parent.width
-                    height: headerRow.height + Theme.paddingLarge
+                    height: Theme.itemSizeLarge
 
-                    Row {
-                        id: headerRow
+                    Image {
+                        id: headerIcon
                         anchors {
                             left: parent.left
                             leftMargin: Theme.horizontalPageMargin
-                            top: parent.top
-                            topMargin: Theme.paddingLarge
+                            verticalCenter: parent.verticalCenter
                         }
-                        spacing: Theme.paddingSmall
+                        width: Theme.iconSizeMedium
+                        height: Theme.iconSizeMedium
+                        source: Qt.resolvedUrl("title-icon.png")
+                        fillMode: Image.PreserveAspectFit
+                    }
 
-                        Image {
-                            width: Theme.iconSizeMedium
-                            height: Theme.iconSizeMedium
-                            source: Qt.resolvedUrl("title-icon.png")
-                            fillMode: Image.PreserveAspectFit
-                            anchors.verticalCenter: parent.verticalCenter
+                    Label {
+                        anchors {
+                            right: parent.right
+                            rightMargin: Theme.horizontalPageMargin
+                            verticalCenter: parent.verticalCenter
                         }
-
-                        Label {
-                            text: "System Ninja"
-                            font.pixelSize: Theme.fontSizeLarge
-                            color: Theme.highlightColor
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
+                        text: "System Ninja"
+                        font.pixelSize: Theme.fontSizeHuge
+                        color: Theme.highlightColor
                     }
                 }
 
