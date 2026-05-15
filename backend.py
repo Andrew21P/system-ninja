@@ -60,11 +60,36 @@ def get_system():
     except:
         pass
 
+    os_version = "Unknown"
+    try:
+        result = subprocess.run(['cat', '/etc/os-release'], capture_output=True, text=True)
+        for line in result.stdout.split('\n'):
+            if line.startswith('VERSION='):
+                os_version = line.split('=', 1)[1].strip('"')
+                break
+    except:
+        pass
+
+    arch = "Unknown"
+    try:
+        arch = subprocess.run(['uname', '-m'], capture_output=True, text=True).stdout.strip()
+    except:
+        pass
+
+    hostname = "Unknown"
+    try:
+        hostname = subprocess.run(['uname', '-n'], capture_output=True, text=True).stdout.strip()
+    except:
+        pass
+
     return {
         "model": model,
         "processor": processor,
         "kernel": kernel,
         "os": "Sailfish OS",
+        "os_version": os_version,
+        "arch": arch,
+        "hostname": hostname,
         "uptime": _uptime_str()
     }
 

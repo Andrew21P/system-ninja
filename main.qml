@@ -15,7 +15,7 @@ ApplicationWindow {
         "load": [0, 0, 0],
         "processes": [],
         "history": {"cpu": [], "ram": []},
-        "system": {"model": "Device", "processor": "--", "kernel": "--", "uptime": "--", "os": "Sailfish OS"}
+        "system": {"model": "Device", "processor": "--", "kernel": "--", "uptime": "--", "os": "Sailfish OS", "os_version": "--", "arch": "--", "hostname": "--"}
     })
 
     property int tick: 0
@@ -67,6 +67,10 @@ ApplicationWindow {
                         })
                     }
                 }
+                MenuItem {
+                    text: "About"
+                    onClicked: pageStack.push(Qt.resolvedUrl("pages/AboutPage.qml"))
+                }
             }
 
             Column {
@@ -117,16 +121,17 @@ ApplicationWindow {
                         }
                         Label {
                             width: parent.width
-                            text: app.latestStats.system.os + " · " + app.latestStats.system.kernel
+                            text: app.latestStats.system.os + " " + app.latestStats.system.os_version + " · " + app.latestStats.system.kernel
                             font.pixelSize: Theme.fontSizeExtraSmall
                             color: Theme.secondaryColor
                             truncationMode: TruncationMode.Fade
                         }
                         Label {
                             width: parent.width
-                            text: "Uptime: " + app.latestStats.system.uptime
+                            text: app.latestStats.system.arch + " · " + app.latestStats.system.hostname + " · Uptime: " + app.latestStats.system.uptime
                             font.pixelSize: Theme.fontSizeExtraSmall
                             color: Theme.secondaryColor
+                            truncationMode: TruncationMode.Fade
                         }
                     }
                 }
