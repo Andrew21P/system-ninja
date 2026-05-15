@@ -295,31 +295,7 @@ ApplicationWindow {
                             }
                         }
 
-                        Canvas {
-                            id: ramSparkline
-                            width: parent.width
-                            height: Theme.paddingLarge * 2
-                            property int paintTrigger: app.tick
-                            onPaintTriggerChanged: requestPaint()
-                            onPaint: {
-                                var ctx = getContext("2d")
-                                ctx.clearRect(0, 0, width, height)
-                                var data = app.latestStats.history ? app.latestStats.history.ram : []
-                                if (data.length < 2) return
-                                ctx.strokeStyle = "#4da6ff"
-                                ctx.lineWidth = 2
-                                ctx.lineJoin = "round"
-                                ctx.beginPath()
-                                var step = width / (Math.max(data.length, 2) - 1)
-                                for (var i = 0; i < data.length; i++) {
-                                    var x = i * step
-                                    var y = height - (data[i] / 100) * height
-                                    if (i === 0) ctx.moveTo(x, y)
-                                    else ctx.lineTo(x, y)
-                                }
-                                ctx.stroke()
-                            }
-                        }
+
                     }
                 }
 
