@@ -9,132 +9,39 @@ ApplicationWindow {
 
     cover: Component {
         CoverBackground {
-            Column {
+            anchors.fill: parent
+
+            Label {
+                anchors.top: parent.top
+                anchors.topMargin: Theme.paddingLarge
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "System Ninja"
+                font.pixelSize: Theme.fontSizeSmall
+                color: Theme.highlightColor
+            }
+
+            Label {
                 anchors.centerIn: parent
-                width: parent.width - 10
-                spacing: parent.height > 180 ? 6 : (parent.height > 120 ? 3 : 1)
+                width: parent.width - Theme.paddingLarge * 2
+                height: width
+                color: Theme.primaryColor
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                wrapMode: Text.Wrap
+                fontSizeMode: Text.Fit
+                font.family: "Monospace"
+                text: (app.latestStats.cpu ? app.latestStats.cpu.pct : "0") + "% CPU\n" +
+                      (app.latestStats.ram ? app.latestStats.ram.pct : "0") + "% RAM\n" +
+                      (app.latestStats.battery ? app.latestStats.battery.capacity : "0") + "% BAT"
+            }
 
-                property bool isLarge: parent.height > 180
-                property bool isMedium: parent.height > 120 && parent.height <= 180
-                property bool isSmall: parent.height <= 120
-
-                function bar(pct, size) {
-                    var filled = Math.round(pct / (100 / size))
-                    var empty = size - filled
-                    var out = ""
-                    for (var i = 0; i < filled; i++) out += "█"
-                    for (var i = 0; i < empty; i++) out += "░"
-                    return out
-                }
-
-                Label {
-                    text: "System Ninja"
-                    visible: parent.isLarge
-                    font.pixelSize: 14
-                    color: Theme.highlightColor
-                    anchors.horizontalCenter: parent.horizontalCenter
-                }
-
-                Label {
-                    text: "Ninja"
-                    visible: parent.isMedium
-                    font.pixelSize: 11
-                    color: Theme.highlightColor
-                    anchors.horizontalCenter: parent.horizontalCenter
-                }
-
-                // Large: full stats with 10-char bars
-                Label {
-                    visible: parent.isLarge
-                    text: "CPU " + (app.latestStats.cpu ? app.latestStats.cpu.pct : "0") + "%\n" + parent.bar(app.latestStats.cpu ? app.latestStats.cpu.pct : 0, 10)
-                    font.pixelSize: 11
-                    color: Theme.primaryColor
-                    font.family: "Monospace"
-                    lineHeight: 1.2
-                    lineHeightMode: Text.ProportionalHeight
-                }
-
-                Label {
-                    visible: parent.isLarge
-                    text: "RAM " + (app.latestStats.ram ? app.latestStats.ram.pct : "0") + "%\n" + parent.bar(app.latestStats.ram ? app.latestStats.ram.pct : 0, 10)
-                    font.pixelSize: 11
-                    color: Theme.primaryColor
-                    font.family: "Monospace"
-                    lineHeight: 1.2
-                    lineHeightMode: Text.ProportionalHeight
-                }
-
-                Label {
-                    visible: parent.isLarge
-                    text: "BAT " + (app.latestStats.battery ? app.latestStats.battery.capacity : "0") + "%\n" + parent.bar(app.latestStats.battery ? app.latestStats.battery.capacity : 0, 10)
-                    font.pixelSize: 11
-                    color: Theme.primaryColor
-                    font.family: "Monospace"
-                    lineHeight: 1.2
-                    lineHeightMode: Text.ProportionalHeight
-                }
-
-                // Medium: compact 5-char bars
-                Label {
-                    visible: parent.isMedium
-                    text: "C " + (app.latestStats.cpu ? app.latestStats.cpu.pct : "0") + "% " + parent.bar(app.latestStats.cpu ? app.latestStats.cpu.pct : 0, 5)
-                    font.pixelSize: 10
-                    color: Theme.primaryColor
-                    font.family: "Monospace"
-                }
-
-                Label {
-                    visible: parent.isMedium
-                    text: "R " + (app.latestStats.ram ? app.latestStats.ram.pct : "0") + "% " + parent.bar(app.latestStats.ram ? app.latestStats.ram.pct : 0, 5)
-                    font.pixelSize: 10
-                    color: Theme.primaryColor
-                    font.family: "Monospace"
-                }
-
-                Label {
-                    visible: parent.isMedium
-                    text: "B " + (app.latestStats.battery ? app.latestStats.battery.capacity : "0") + "% " + parent.bar(app.latestStats.battery ? app.latestStats.battery.capacity : 0, 5)
-                    font.pixelSize: 10
-                    color: Theme.primaryColor
-                    font.family: "Monospace"
-                }
-
-                // Small: just 2 big numbers, no bars
-                Row {
-                    visible: parent.isSmall
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 8
-
-                    Label {
-                        text: app.latestStats.cpu ? app.latestStats.cpu.pct : "0"
-                        font.pixelSize: 18
-                        color: Theme.highlightColor
-                        font.bold: true
-                    }
-
-                    Label {
-                        text: app.latestStats.battery ? app.latestStats.battery.capacity : "0"
-                        font.pixelSize: 18
-                        color: Theme.secondaryHighlightColor
-                        font.bold: true
-                    }
-                }
-
-                Row {
-                    visible: parent.isSmall
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 20
-
-                    Label {
-                        text: "CPU"
-                        font.pixelSize: 8
-                        color: Theme.secondaryColor
-                    }
-
-                    Label {
-                        text: "BAT"
-                        font.pixelSize: 8
-                        color: Theme.secondaryColor
+            CoverActionList {
+                CoverAction {
+                    iconSource: "image://theme/icon-cover-refresh"
+                    onTriggered: {
+                        python.call("backend.get_all", [], function(result) {
+                            updateStats(result)
+                        })
                     }
                 }
             }
