@@ -8,26 +8,13 @@ ApplicationWindow {
     property var latestStats: ({"cpu":{"pct":0},"ram":{"pct":0},"battery":{"capacity":0}})
 
     cover: Component {
-        Cover {
-            allowResize: true
-            transparent: true
-
+        CoverBackground {
             Column {
-                anchors.fill: parent
-                anchors.margins: (size === Cover.Small) ? Theme.paddingSmall : Theme.paddingMedium
-                spacing: (size === Cover.Small) ? Theme.paddingSmall : Theme.paddingSmall
+                anchors.centerIn: parent
+                width: parent.width - Theme.paddingLarge * 2
+                spacing: Theme.paddingSmall
 
-                // Title — only in large mode
-                Label {
-                    width: parent.width
-                    horizontalAlignment: Text.AlignHCenter
-                    text: "System Ninja"
-                    color: Theme.secondaryHighlightColor
-                    font.pixelSize: Theme.fontSizeSmall
-                    visible: size !== Cover.Small
-                }
-
-                // CPU — the hero stat
+                // CPU% — big and clear
                 Label {
                     width: parent.width
                     horizontalAlignment: Text.AlignHCenter
@@ -36,24 +23,23 @@ ApplicationWindow {
                         var pct = app.latestStats.cpu ? app.latestStats.cpu.pct : 0
                         return pct > 80 ? "#ff4d4d" : pct > 50 ? "#ffaa00" : Theme.highlightColor
                     }
-                    font.pixelSize: (size === Cover.Small) ? Theme.fontSizeExtraLarge : Theme.fontSizeExtraLarge * 1.6
+                    font.pixelSize: Theme.fontSizeExtraLarge * 1.4
                     font.bold: true
                 }
 
-                // CPU label — hidden in small
+                // CPU label
                 Label {
                     width: parent.width
                     horizontalAlignment: Text.AlignHCenter
                     text: "CPU"
                     color: Theme.secondaryColor
                     font.pixelSize: Theme.fontSizeTiny
-                    visible: size !== Cover.Small
                 }
 
-                // CPU visual bar
+                // Visual bar
                 Rectangle {
                     width: parent.width
-                    height: (size === Cover.Small) ? Theme.paddingSmall : Theme.paddingMedium
+                    height: Theme.paddingMedium
                     color: Theme.rgba(Theme.secondaryColor, 0.15)
                     radius: height / 2
 
@@ -68,66 +54,14 @@ ApplicationWindow {
                     }
                 }
 
-                // RAM row — only large
-                Row {
+                // RAM + Battery in one compact line
+                Label {
                     width: parent.width
-                    visible: size !== Cover.Small
-                    spacing: Theme.paddingSmall
-
-                    Label {
-                        text: "RAM"
-                        color: Theme.secondaryColor
-                        font.pixelSize: Theme.fontSizeTiny
-                        width: parent.width * 0.28
-                    }
-                    Rectangle {
-                        width: parent.width * 0.72
-                        height: Theme.paddingSmall
-                        anchors.verticalCenter: parent.verticalCenter
-                        color: Theme.rgba(Theme.secondaryColor, 0.15)
-                        radius: height / 2
-
-                        Rectangle {
-                            width: parent.width * (app.latestStats.ram ? app.latestStats.ram.pct : 0) / 100
-                            height: parent.height
-                            radius: height / 2
-                            color: {
-                                var pct = app.latestStats.ram ? app.latestStats.ram.pct : 0
-                                return pct > 80 ? "#ff4d4d" : pct > 50 ? "#ffaa00" : "#00cc66"
-                            }
-                        }
-                    }
-                }
-
-                // Battery row — only large
-                Row {
-                    width: parent.width
-                    visible: size !== Cover.Small
-                    spacing: Theme.paddingSmall
-
-                    Label {
-                        text: "BAT"
-                        color: Theme.secondaryColor
-                        font.pixelSize: Theme.fontSizeTiny
-                        width: parent.width * 0.28
-                    }
-                    Rectangle {
-                        width: parent.width * 0.72
-                        height: Theme.paddingSmall
-                        anchors.verticalCenter: parent.verticalCenter
-                        color: Theme.rgba(Theme.secondaryColor, 0.15)
-                        radius: height / 2
-
-                        Rectangle {
-                            width: parent.width * (app.latestStats.battery ? app.latestStats.battery.capacity : 0) / 100
-                            height: parent.height
-                            radius: height / 2
-                            color: {
-                                var pct = app.latestStats.battery ? app.latestStats.battery.capacity : 0
-                                return pct < 20 ? "#ff4d4d" : pct < 50 ? "#ffaa00" : "#00cc66"
-                            }
-                        }
-                    }
+                    horizontalAlignment: Text.AlignHCenter
+                    text: "RAM " + (app.latestStats.ram ? app.latestStats.ram.pct : "0") +
+                          "%   BAT " + (app.latestStats.battery ? app.latestStats.battery.capacity : "0") + "%"
+                    color: Theme.secondaryColor
+                    font.pixelSize: Theme.fontSizeTiny
                 }
             }
 
