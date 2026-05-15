@@ -1,3 +1,4 @@
 #!/bin/bash
 export QT_SELECT=5
-exec qmlscene /home/defaultuser/apps/system-ninja/main.qml
+SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+exec qmlscene "$SCRIPT_DIR/main.qml"

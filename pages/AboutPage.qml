@@ -145,24 +145,11 @@ Page {
 
                     Label {
                         width: parent.width
-                        text: "MIT licensed. Fork it, break it, improve it."
+                        text: "MIT licensed."
                         font.pixelSize: Theme.fontSizeExtraSmall
                         color: Theme.secondaryColor
                         wrapMode: Text.Wrap
                         horizontalAlignment: Text.AlignHCenter
-                    }
-
-                    BackgroundItem {
-                        width: parent.width
-                        height: Theme.itemSizeSmall
-                        onClicked: Qt.openUrlExternally("https://github.com/Andrew21P/system-ninja")
-
-                        Label {
-                            anchors.centerIn: parent
-                            text: "github.com/Andrew21P/system-ninja"
-                            font.pixelSize: Theme.fontSizeSmall
-                            color: parent.highlighted ? Theme.highlightColor : "#4da6ff"
-                        }
                     }
                 }
             }

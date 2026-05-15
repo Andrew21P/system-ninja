@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=System Ninja
+Icon=system-ninja
+Exec=/usr/share/system-ninja/launch.sh
+Terminal=false
+Categories=System;Utility;
+Comment=System monitoring dashboard for Sailfish OS
+X-Nemo-Application-Type=silica-qt5
