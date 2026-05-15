@@ -11,7 +11,7 @@ Page {
             width: parent.width
             spacing: 0
 
-            PageHeader { title: "About System Ninja" }
+            PageHeader { title: "About" }
 
             Item {
                 width: parent.width
@@ -44,7 +44,7 @@ Page {
             Label {
                 width: parent.width - 2 * Theme.horizontalPageMargin
                 x: Theme.horizontalPageMargin
-                text: "v1.0 — Experimental"
+                text: "v1.0 Experimental"
                 font.pixelSize: Theme.fontSizeSmall
                 color: Theme.secondaryColor
                 horizontalAlignment: Text.AlignHCenter
@@ -52,7 +52,6 @@ Page {
 
             Item { width: parent.width; height: Theme.paddingLarge }
 
-            // Description card
             Rectangle {
                 width: parent.width - 2 * Theme.horizontalPageMargin
                 x: Theme.horizontalPageMargin
@@ -71,7 +70,7 @@ Page {
 
                     Label {
                         width: parent.width
-                        text: "A native Sailfish OS system monitor built entirely on-device. Designed for speed, clarity, and visual polish."
+                        text: "A lean system monitor for Sailfish OS. Nothing fancy, just the stats you need without the bloat."
                         font.pixelSize: Theme.fontSizeSmall
                         color: Theme.primaryColor
                         wrapMode: Text.Wrap
@@ -82,7 +81,6 @@ Page {
 
             Item { width: parent.width; height: Theme.paddingLarge }
 
-            // Info card
             Rectangle {
                 width: parent.width - 2 * Theme.horizontalPageMargin
                 x: Theme.horizontalPageMargin
@@ -101,7 +99,7 @@ Page {
 
                     Label {
                         width: parent.width
-                        text: "Built purely inside a Sony Xperia XA2 running Sailfish OS — no SDK, no emulator, no desktop build environment. Every line of QML and Python was written, tested, and iterated directly on the phone itself."
+                        text: "Every line was written, tested and debugged directly on a Sony Xperia XA2. No desktop IDE, no emulator, no SDK. Just a phone, a terminal, and a lot of patience."
                         font.pixelSize: Theme.fontSizeExtraSmall
                         color: Theme.secondaryColor
                         wrapMode: Text.Wrap
@@ -110,7 +108,7 @@ Page {
 
                     Label {
                         width: parent.width
-                        text: "Made with pride in Portugal 🇵🇹"
+                        text: "Built in Portugal"
                         font.pixelSize: Theme.fontSizeExtraSmall
                         color: Theme.highlightColor
                         horizontalAlignment: Text.AlignHCenter
@@ -120,7 +118,6 @@ Page {
 
             Item { width: parent.width; height: Theme.paddingLarge }
 
-            // Open source card
             Rectangle {
                 width: parent.width - 2 * Theme.horizontalPageMargin
                 x: Theme.horizontalPageMargin
@@ -148,7 +145,7 @@ Page {
 
                     Label {
                         width: parent.width
-                        text: "Licensed under MIT. Contributions, forks, and feedback are welcome."
+                        text: "MIT licensed. Fork it, break it, improve it."
                         font.pixelSize: Theme.fontSizeExtraSmall
                         color: Theme.secondaryColor
                         wrapMode: Text.Wrap
