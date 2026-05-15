@@ -13,22 +13,24 @@ ApplicationWindow {
             allowResize: true
 
             property bool isSmall: size === Cover.Small
-            property real _scale: width / Theme.coverSizeLarge.width
 
-            // Inner item always designed for LARGE size, then scaled to actual cover
+            // Inner canvas designed for LARGE size, then non-uniformly scaled
+            // to exactly match the actual cover dimensions
             Item {
                 id: content
                 width: Theme.coverSizeLarge.width
                 height: Theme.coverSizeLarge.height
-                scale: coverBg._scale
-                transformOrigin: Item.TopLeft
+
+                transform: Scale {
+                    xScale: coverBg.width / content.width
+                    yScale: coverBg.height / content.height
+                }
 
                 Column {
                     anchors.centerIn: parent
-                    width: parent.width * 0.8
+                    width: parent.width * 0.82
                     spacing: Theme.paddingMedium
 
-                    // CPU% — big hero number
                     Label {
                         anchors.horizontalCenter: parent.horizontalCenter
                         text: (app.latestStats.cpu ? app.latestStats.cpu.pct : "0") + "%"
@@ -36,11 +38,10 @@ ApplicationWindow {
                             var pct = app.latestStats.cpu ? app.latestStats.cpu.pct : 0
                             return pct > 80 ? "#ff4d4d" : pct > 50 ? "#ffaa00" : Theme.highlightColor
                         }
-                        font.pixelSize: Theme.fontSizeExtraLarge * 1.5
+                        font.pixelSize: Theme.fontSizeExtraLarge
                         font.bold: true
                     }
 
-                    // CPU label — hidden when small
                     Label {
                         anchors.horizontalCenter: parent.horizontalCenter
                         text: "CPU"
@@ -49,11 +50,10 @@ ApplicationWindow {
                         visible: !coverBg.isSmall
                     }
 
-                    // Visual bar
                     Rectangle {
                         anchors.horizontalCenter: parent.horizontalCenter
                         width: parent.width
-                        height: Theme.paddingMedium
+                        height: Theme.paddingSmall
                         color: Theme.rgba(Theme.secondaryColor, 0.15)
                         radius: height / 2
 
@@ -68,13 +68,12 @@ ApplicationWindow {
                         }
                     }
 
-                    // RAM + Battery — hidden when small
                     Label {
                         anchors.horizontalCenter: parent.horizontalCenter
                         text: "RAM " + (app.latestStats.ram ? app.latestStats.ram.pct : "0") +
                               "%   BAT " + (app.latestStats.battery ? app.latestStats.battery.capacity : "0") + "%"
                         color: Theme.secondaryColor
-                        font.pixelSize: Theme.fontSizeSmall
+                        font.pixelSize: Theme.fontSizeTiny
                         visible: !coverBg.isSmall
                     }
                 }
