@@ -86,13 +86,14 @@ ApplicationWindow {
                             top: parent.top
                             topMargin: Theme.paddingLarge
                         }
-                        spacing: Theme.paddingMedium
+                        spacing: Theme.paddingSmall
 
                         Image {
-                            width: Theme.iconSizeLarge
-                            height: Theme.iconSizeLarge
+                            width: Theme.iconSizeMedium
+                            height: Theme.iconSizeMedium
                             source: Qt.resolvedUrl("title-icon.png")
                             fillMode: Image.PreserveAspectFit
+                            anchors.verticalCenter: parent.verticalCenter
                         }
 
                         Label {
