@@ -5,14 +5,54 @@ import io.thp.pyotherside 1.5
 ApplicationWindow {
     id: app
     
+    property var latestStats: ({"cpu":{"pct":0},"ram":{"pct":0},"battery":{"capacity":0}})
+
     cover: Component {
         CoverBackground {
-            Label {
+            Column {
                 anchors.centerIn: parent
-                text: "System\nNinja"
-                horizontalAlignment: Text.AlignHCenter
-                color: Theme.highlightColor
-                font.pixelSize: Theme.fontSizeLarge
+                width: parent.width - Theme.paddingMedium * 2
+                spacing: Theme.paddingSmall
+
+                Label {
+                    text: "System Ninja"
+                    font.pixelSize: Theme.fontSizeSmall
+                    color: Theme.highlightColor
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+
+                function bar(pct) {
+                    var filled = Math.round(pct / 10)
+                    var empty = 10 - filled
+                    var out = ""
+                    for (var i = 0; i < filled; i++) out += "█"
+                    for (var i = 0; i < empty; i++) out += "░"
+                    return out
+                }
+
+                Label {
+                    text: "CPU " + (app.latestStats.cpu ? app.latestStats.cpu.pct : "0") + "%\n" + parent.bar(app.latestStats.cpu ? app.latestStats.cpu.pct : 0)
+                    font.pixelSize: Theme.fontSizeTiny
+                    color: Theme.primaryColor
+                    lineHeight: 1.2
+                    lineHeightMode: Text.ProportionalHeight
+                }
+
+                Label {
+                    text: "RAM " + (app.latestStats.ram ? app.latestStats.ram.pct : "0") + "%\n" + parent.bar(app.latestStats.ram ? app.latestStats.ram.pct : 0)
+                    font.pixelSize: Theme.fontSizeTiny
+                    color: Theme.primaryColor
+                    lineHeight: 1.2
+                    lineHeightMode: Text.ProportionalHeight
+                }
+
+                Label {
+                    text: "BAT " + (app.latestStats.battery ? app.latestStats.battery.capacity : "0") + "%\n" + parent.bar(app.latestStats.battery ? app.latestStats.battery.capacity : 0)
+                    font.pixelSize: Theme.fontSizeTiny
+                    color: Theme.primaryColor
+                    lineHeight: 1.2
+                    lineHeightMode: Text.ProportionalHeight
+                }
             }
         }
     }
@@ -232,6 +272,7 @@ ApplicationWindow {
 
     function updateStats(data) {
         if (!data) return
+        app.latestStats = data
 
         if (data.cpu) {
             cpuLabel.text = data.cpu.pct + "%"
