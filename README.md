@@ -1,19 +1,19 @@
 # System Ninja
 
-> Native system monitor for Sailfish OS — built entirely on-device on a Sony Xperia XA2.
+> Native system monitor for Sailfish OS - built entirely on-device on a Sony Xperia XA2.
 
 <img src="screenshot.png" width="300" alt="System Ninja screenshot">
 
 ## Features
 
-- **Live CPU monitoring** — real-time usage percentage with core count & frequency
-- **Memory usage** — RAM used / total with progress bar
-- **Storage stats** — internal storage usage tracking
-- **Battery status** — capacity % and charging state
-- **Network info** — WiFi connection status and IP address
-- **Top processes** — 5 most CPU-intensive processes
-- **Pull-to-refresh** — native Silica pull-down gesture
-- **Auto-updating** — refreshes every 2 seconds
+- **Live CPU monitoring** - real-time usage percentage with core count & frequency
+- **Memory usage** - RAM used / total with progress bar
+- **Storage stats** - internal storage usage tracking
+- **Battery status** - capacity % and charging state
+- **Network info** - WiFi connection status and IP address
+- **Top processes** - 5 most CPU-intensive processes
+- **Pull-to-refresh** - native Silica pull-down gesture
+- **Auto-updating** - refreshes every 2 seconds
 
 ## Tech Stack
 
@@ -25,7 +25,7 @@
 
 ## Why This Exists
 
-This app was created directly on a Sailfish OS phone without a PC SDK — proving that a phone can build apps for itself in real-time using root access, Python, and QML.
+This app was created directly on a Sailfish OS phone without a PC SDK - proving that a phone can build apps for itself in real-time using root access, Python, and QML.
 
 ## Installation
 
@@ -60,4 +60,4 @@ system-ninja/
 
 ## License
 
-MIT — do whatever you want with it.
+MIT - do whatever you want with it.
