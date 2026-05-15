@@ -9,37 +9,44 @@ ApplicationWindow {
 
     cover: Component {
         CoverBackground {
+            id: coverBg
+            allowResize: true
+
             Column {
                 anchors.centerIn: parent
-                width: parent.width - Theme.paddingLarge * 2
-                spacing: Theme.paddingSmall
+                width: parent.width * 0.82
+                spacing: parent.height * 0.025
 
-                // CPU% — big and clear
+                // CPU% — hero stat, scales with cover height
                 Label {
                     width: parent.width
+                    height: coverBg.height * 0.18
                     horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
                     text: (app.latestStats.cpu ? app.latestStats.cpu.pct : "0") + "%"
                     color: {
                         var pct = app.latestStats.cpu ? app.latestStats.cpu.pct : 0
                         return pct > 80 ? "#ff4d4d" : pct > 50 ? "#ffaa00" : Theme.highlightColor
                     }
-                    font.pixelSize: Theme.fontSizeExtraLarge * 1.4
+                    font.pixelSize: height * 0.75
                     font.bold: true
                 }
 
-                // CPU label
+                // "CPU" label
                 Label {
                     width: parent.width
+                    height: coverBg.height * 0.07
                     horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
                     text: "CPU"
                     color: Theme.secondaryColor
-                    font.pixelSize: Theme.fontSizeTiny
+                    font.pixelSize: height * 0.7
                 }
 
-                // Visual bar
+                // Visual bar — scales with cover width
                 Rectangle {
                     width: parent.width
-                    height: Theme.paddingMedium
+                    height: coverBg.height * 0.055
                     color: Theme.rgba(Theme.secondaryColor, 0.15)
                     radius: height / 2
 
@@ -54,14 +61,16 @@ ApplicationWindow {
                     }
                 }
 
-                // RAM + Battery in one compact line
+                // RAM + Battery — compact
                 Label {
                     width: parent.width
+                    height: coverBg.height * 0.08
                     horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
                     text: "RAM " + (app.latestStats.ram ? app.latestStats.ram.pct : "0") +
                           "%   BAT " + (app.latestStats.battery ? app.latestStats.battery.capacity : "0") + "%"
                     color: Theme.secondaryColor
-                    font.pixelSize: Theme.fontSizeTiny
+                    font.pixelSize: height * 0.65
                 }
             }
 
