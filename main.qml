@@ -10,72 +10,51 @@ ApplicationWindow {
     cover: Component {
         CoverBackground {
             id: coverBg
-            allowResize: true
 
-            property bool isSmall: size === Cover.Small
+            // Content lives at the top of the cover so it survives
+            // compositor cropping when the cover is shown small.
+            Column {
+                anchors.top: parent.top
+                anchors.topMargin: Theme.paddingLarge
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width - Theme.paddingLarge * 2
+                spacing: Theme.paddingSmall
 
-            // Inner canvas designed for LARGE size, then non-uniformly scaled
-            // to exactly match the actual cover dimensions
-            Item {
-                id: content
-                width: Theme.coverSizeLarge.width
-                height: Theme.coverSizeLarge.height
-
-                transform: Scale {
-                    xScale: coverBg.width / content.width
-                    yScale: coverBg.height / content.height
+                Label {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: (app.latestStats.cpu ? app.latestStats.cpu.pct : "0") + "%"
+                    color: {
+                        var pct = app.latestStats.cpu ? app.latestStats.cpu.pct : 0
+                        return pct > 80 ? "#ff4d4d" : pct > 50 ? "#ffaa00" : Theme.highlightColor
+                    }
+                    font.pixelSize: Theme.fontSizeExtraLarge
+                    font.bold: true
                 }
 
-                Column {
-                    anchors.centerIn: parent
-                    width: parent.width * 0.82
-                    spacing: Theme.paddingMedium
-
-                    Label {
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        text: (app.latestStats.cpu ? app.latestStats.cpu.pct : "0") + "%"
-                        color: {
-                            var pct = app.latestStats.cpu ? app.latestStats.cpu.pct : 0
-                            return pct > 80 ? "#ff4d4d" : pct > 50 ? "#ffaa00" : Theme.highlightColor
-                        }
-                        font.pixelSize: Theme.fontSizeExtraLarge
-                        font.bold: true
-                    }
-
-                    Label {
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        text: "CPU"
-                        color: Theme.secondaryColor
-                        font.pixelSize: Theme.fontSizeSmall
-                        visible: !coverBg.isSmall
-                    }
+                Rectangle {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: parent.width
+                    height: Theme.paddingSmall
+                    color: Theme.rgba(Theme.secondaryColor, 0.15)
+                    radius: height / 2
 
                     Rectangle {
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        width: parent.width
-                        height: Theme.paddingSmall
-                        color: Theme.rgba(Theme.secondaryColor, 0.15)
+                        width: parent.width * (app.latestStats.cpu ? app.latestStats.cpu.pct : 0) / 100
+                        height: parent.height
                         radius: height / 2
-
-                        Rectangle {
-                            width: parent.width * (app.latestStats.cpu ? app.latestStats.cpu.pct : 0) / 100
-                            height: parent.height
-                            radius: height / 2
-                            color: {
-                                var pct = app.latestStats.cpu ? app.latestStats.cpu.pct : 0
-                                return pct > 80 ? "#ff4d4d" : pct > 50 ? "#ffaa00" : "#00cc66"
-                            }
+                        color: {
+                            var pct = app.latestStats.cpu ? app.latestStats.cpu.pct : 0
+                            return pct > 80 ? "#ff4d4d" : pct > 50 ? "#ffaa00" : "#00cc66"
                         }
                     }
+                }
 
-                    Label {
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        text: "RAM " + (app.latestStats.ram ? app.latestStats.ram.pct : "0") +
-                              "%   BAT " + (app.latestStats.battery ? app.latestStats.battery.capacity : "0") + "%"
-                        color: Theme.secondaryColor
-                        font.pixelSize: Theme.fontSizeTiny
-                        visible: !coverBg.isSmall
-                    }
+                Label {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "RAM " + (app.latestStats.ram ? app.latestStats.ram.pct : "0") +
+                          "%   BAT " + (app.latestStats.battery ? app.latestStats.battery.capacity : "0") + "%"
+                    color: Theme.secondaryColor
+                    font.pixelSize: Theme.fontSizeTiny
                 }
             }
 
