@@ -74,7 +74,35 @@ ApplicationWindow {
                 width: parent.width
                 spacing: 0
 
-                PageHeader { title: "System Ninja" }
+                Item {
+                    width: parent.width
+                    height: headerRow.height + Theme.paddingLarge
+
+                    Row {
+                        id: headerRow
+                        anchors {
+                            left: parent.left
+                            leftMargin: Theme.horizontalPageMargin
+                            top: parent.top
+                            topMargin: Theme.paddingLarge
+                        }
+                        spacing: Theme.paddingMedium
+
+                        Image {
+                            width: Theme.iconSizeLarge
+                            height: Theme.iconSizeLarge
+                            source: Qt.resolvedUrl("title-icon.png")
+                            fillMode: Image.PreserveAspectFit
+                        }
+
+                        Label {
+                            text: "System Ninja"
+                            font.pixelSize: Theme.fontSizeLarge
+                            color: Theme.highlightColor
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                    }
+                }
 
                 // ═══════════════════════════════════════════
                 // SYSTEM INFO CARD
