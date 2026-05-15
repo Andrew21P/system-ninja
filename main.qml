@@ -9,49 +9,51 @@ ApplicationWindow {
 
     cover: Component {
         CoverBackground {
-            Column {
-                anchors.centerIn: parent
-                width: parent.width - Theme.paddingMedium * 2
-                spacing: Theme.paddingSmall
+            Rectangle {
+                anchors.fill: parent
+                color: "#000000"
+                opacity: 0.9
 
-                Label {
-                    text: "System Ninja"
-                    font.pixelSize: Theme.fontSizeSmall
-                    color: Theme.highlightColor
-                    anchors.horizontalCenter: parent.horizontalCenter
-                }
+                Column {
+                    anchors.centerIn: parent
+                    spacing: 1
 
-                function bar(pct) {
-                    var filled = Math.round(pct / 10)
-                    var empty = 10 - filled
-                    var out = ""
-                    for (var i = 0; i < filled; i++) out += "█"
-                    for (var i = 0; i < empty; i++) out += "░"
-                    return out
-                }
+                    function miniBar(pct) {
+                        var filled = Math.round(pct / 20)
+                        var empty = 5 - filled
+                        var out = ""
+                        for (var i = 0; i < filled; i++) out += "█"
+                        for (var i = 0; i < empty; i++) out += "░"
+                        return out
+                    }
 
-                Label {
-                    text: "CPU " + (app.latestStats.cpu ? app.latestStats.cpu.pct : "0") + "%\n" + parent.bar(app.latestStats.cpu ? app.latestStats.cpu.pct : 0)
-                    font.pixelSize: Theme.fontSizeTiny
-                    color: Theme.primaryColor
-                    lineHeight: 1.2
-                    lineHeightMode: Text.ProportionalHeight
-                }
+                    Label {
+                        text: "Ninja"
+                        font.pixelSize: 10
+                        color: Theme.highlightColor
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
 
-                Label {
-                    text: "RAM " + (app.latestStats.ram ? app.latestStats.ram.pct : "0") + "%\n" + parent.bar(app.latestStats.ram ? app.latestStats.ram.pct : 0)
-                    font.pixelSize: Theme.fontSizeTiny
-                    color: Theme.primaryColor
-                    lineHeight: 1.2
-                    lineHeightMode: Text.ProportionalHeight
-                }
+                    Label {
+                        text: "C " + (app.latestStats.cpu ? app.latestStats.cpu.pct : "0") + "% " + parent.miniBar(app.latestStats.cpu ? app.latestStats.cpu.pct : 0)
+                        font.pixelSize: 8
+                        color: "#ffffff"
+                        font.family: "Monospace"
+                    }
 
-                Label {
-                    text: "BAT " + (app.latestStats.battery ? app.latestStats.battery.capacity : "0") + "%\n" + parent.bar(app.latestStats.battery ? app.latestStats.battery.capacity : 0)
-                    font.pixelSize: Theme.fontSizeTiny
-                    color: Theme.primaryColor
-                    lineHeight: 1.2
-                    lineHeightMode: Text.ProportionalHeight
+                    Label {
+                        text: "R " + (app.latestStats.ram ? app.latestStats.ram.pct : "0") + "% " + parent.miniBar(app.latestStats.ram ? app.latestStats.ram.pct : 0)
+                        font.pixelSize: 8
+                        color: "#ffffff"
+                        font.family: "Monospace"
+                    }
+
+                    Label {
+                        text: "B " + (app.latestStats.battery ? app.latestStats.battery.capacity : "0") + "% " + parent.miniBar(app.latestStats.battery ? app.latestStats.battery.capacity : 0)
+                        font.pixelSize: 8
+                        color: "#ffffff"
+                        font.family: "Monospace"
+                    }
                 }
             }
         }
