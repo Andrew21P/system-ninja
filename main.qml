@@ -8,31 +8,127 @@ ApplicationWindow {
     property var latestStats: ({"cpu":{"pct":0},"ram":{"pct":0},"battery":{"capacity":0}})
 
     cover: Component {
-        CoverBackground {
-            anchors.fill: parent
+        Cover {
+            allowResize: true
+            transparent: true
 
-            Label {
-                anchors.top: parent.top
-                anchors.topMargin: Theme.paddingLarge
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: "System Ninja"
-                font.pixelSize: Theme.fontSizeSmall
-                color: Theme.highlightColor
-            }
+            Column {
+                anchors.fill: parent
+                anchors.margins: (size === Cover.Small) ? Theme.paddingSmall : Theme.paddingMedium
+                spacing: (size === Cover.Small) ? Theme.paddingSmall : Theme.paddingSmall
 
-            Label {
-                anchors.centerIn: parent
-                width: parent.width - Theme.paddingLarge * 2
-                height: width
-                color: Theme.primaryColor
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                wrapMode: Text.Wrap
-                fontSizeMode: Text.Fit
-                font.family: "Monospace"
-                text: (app.latestStats.cpu ? app.latestStats.cpu.pct : "0") + "% CPU\n" +
-                      (app.latestStats.ram ? app.latestStats.ram.pct : "0") + "% RAM\n" +
-                      (app.latestStats.battery ? app.latestStats.battery.capacity : "0") + "% BAT"
+                // Title — only in large mode
+                Label {
+                    width: parent.width
+                    horizontalAlignment: Text.AlignHCenter
+                    text: "System Ninja"
+                    color: Theme.secondaryHighlightColor
+                    font.pixelSize: Theme.fontSizeSmall
+                    visible: size !== Cover.Small
+                }
+
+                // CPU — the hero stat
+                Label {
+                    width: parent.width
+                    horizontalAlignment: Text.AlignHCenter
+                    text: (app.latestStats.cpu ? app.latestStats.cpu.pct : "0") + "%"
+                    color: {
+                        var pct = app.latestStats.cpu ? app.latestStats.cpu.pct : 0
+                        return pct > 80 ? "#ff4d4d" : pct > 50 ? "#ffaa00" : Theme.highlightColor
+                    }
+                    font.pixelSize: (size === Cover.Small) ? Theme.fontSizeExtraLarge : Theme.fontSizeExtraLarge * 1.6
+                    font.bold: true
+                }
+
+                // CPU label — hidden in small
+                Label {
+                    width: parent.width
+                    horizontalAlignment: Text.AlignHCenter
+                    text: "CPU"
+                    color: Theme.secondaryColor
+                    font.pixelSize: Theme.fontSizeTiny
+                    visible: size !== Cover.Small
+                }
+
+                // CPU visual bar
+                Rectangle {
+                    width: parent.width
+                    height: (size === Cover.Small) ? Theme.paddingSmall : Theme.paddingMedium
+                    color: Theme.rgba(Theme.secondaryColor, 0.15)
+                    radius: height / 2
+
+                    Rectangle {
+                        width: parent.width * (app.latestStats.cpu ? app.latestStats.cpu.pct : 0) / 100
+                        height: parent.height
+                        radius: height / 2
+                        color: {
+                            var pct = app.latestStats.cpu ? app.latestStats.cpu.pct : 0
+                            return pct > 80 ? "#ff4d4d" : pct > 50 ? "#ffaa00" : "#00cc66"
+                        }
+                    }
+                }
+
+                // RAM row — only large
+                Row {
+                    width: parent.width
+                    visible: size !== Cover.Small
+                    spacing: Theme.paddingSmall
+
+                    Label {
+                        text: "RAM"
+                        color: Theme.secondaryColor
+                        font.pixelSize: Theme.fontSizeTiny
+                        width: parent.width * 0.28
+                    }
+                    Rectangle {
+                        width: parent.width * 0.72
+                        height: Theme.paddingSmall
+                        anchors.verticalCenter: parent.verticalCenter
+                        color: Theme.rgba(Theme.secondaryColor, 0.15)
+                        radius: height / 2
+
+                        Rectangle {
+                            width: parent.width * (app.latestStats.ram ? app.latestStats.ram.pct : 0) / 100
+                            height: parent.height
+                            radius: height / 2
+                            color: {
+                                var pct = app.latestStats.ram ? app.latestStats.ram.pct : 0
+                                return pct > 80 ? "#ff4d4d" : pct > 50 ? "#ffaa00" : "#00cc66"
+                            }
+                        }
+                    }
+                }
+
+                // Battery row — only large
+                Row {
+                    width: parent.width
+                    visible: size !== Cover.Small
+                    spacing: Theme.paddingSmall
+
+                    Label {
+                        text: "BAT"
+                        color: Theme.secondaryColor
+                        font.pixelSize: Theme.fontSizeTiny
+                        width: parent.width * 0.28
+                    }
+                    Rectangle {
+                        width: parent.width * 0.72
+                        height: Theme.paddingSmall
+                        anchors.verticalCenter: parent.verticalCenter
+                        color: Theme.rgba(Theme.secondaryColor, 0.15)
+                        radius: height / 2
+
+                        Rectangle {
+                            width: parent.width * (app.latestStats.battery ? app.latestStats.battery.capacity : 0) / 100
+                            height: parent.height
+                            radius: height / 2
+                            color: {
+                                var pct = app.latestStats.battery ? app.latestStats.battery.capacity : 0
+                                return pct < 20 ? "#ff4d4d" : pct < 50 ? "#ffaa00" : "#00cc66"
+                            }
+                        }
+                    }
+                }
             }
 
             CoverActionList {
